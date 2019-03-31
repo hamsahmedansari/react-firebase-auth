@@ -6,7 +6,18 @@ class Dashboard extends Component {
     this.state = {};
   }
   render() {
-    return <h1>Dashboard</h1>;
+    const { state } = this.props;
+    return (
+      <React.Fragment>
+        {state && (
+          <div>
+            <h1>{state.username}</h1>
+            <p>{state.email}</p>
+            <img src={state.image} alt="" />
+          </div>
+        )}
+      </React.Fragment>
+    );
   }
 }
 
