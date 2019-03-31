@@ -28,14 +28,45 @@ class Home extends Component {
         });
       });
   };
+  handelLogout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(res => {
+        this.setState({
+          username: "",
+          image: "",
+          email: ""
+        });
+      });
+  };
+  isSignIn = () => {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        return true;
+      }
+      return false;
+    });
+  };
+  handelAnonymousSignIn = () => {
+    firebase
+      .auth()
+      .signInAnonymously()
+      .then(({ user }) => {
+        console.log(user);
+        this.setState({
+          username: "Alien",
+          image: "https://pbs.twimg.com/media/Dqi1N9IWsAIstzT.png",
+          email: "alien@alieen.com"
+        });
+      });
+  };
   render() {
     return (
       <React.Fragment>
         <FirebaseAuthProvider {...config} firebase={firebase}>
           {/* <div>
-            <button onClick={this.handelGoogleSignIn}>
-              Sign In with Google
-            </button>
+            
             <button
               data-testid="signin-anon"
               onClick={() => {
@@ -44,21 +75,19 @@ class Home extends Component {
             >
               Sign In Anonymously
             </button>
-            <button
-              onClick={() => {
-                firebase.auth().signOut();
-              }}
-            >
-              Sign Out
-            </button>
+            
           </div> */}
           <div>
             <button onClick={this.handelGoogleSignIn}>Google</button>
+            <button onClick={this.handelAnonymousSignIn}>Anonymous</button>
             <button>Facebook</button>
             <button>Twitter</button>
             <button>Github</button>
-            <button>Anonymous</button>
-            <button>Logout</button>
+            {this.state.username ? (
+              <button onClick={this.handelLogout}>Logout</button>
+            ) : (
+              ""
+            )}
             <button>Dashboard</button>
           </div>
           <div>
