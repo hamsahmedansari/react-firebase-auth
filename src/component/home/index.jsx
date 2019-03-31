@@ -77,6 +77,22 @@ class Home extends Component {
       })
       .catch(err => console.log(err));
   };
+
+  handelGithubSignIn = () => {
+    const GithubAuthProvider = new firebase.auth.GithubAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(GithubAuthProvider)
+      .then(({ user }) => {
+        console.log(user);
+        this.setState({
+          username: user.displayName,
+          image: user.photoURL,
+          email: user.email
+        });
+      })
+      .catch(err => console.log(err));
+  };
   render() {
     return (
       <React.Fragment>
@@ -97,8 +113,8 @@ class Home extends Component {
             <button onClick={this.handelGoogleSignIn}>Google</button>
             <button onClick={this.handelAnonymousSignIn}>Anonymous</button>
             <button onClick={this.handelFacebookSignIn}>Facebook</button>
-            <button>Twitter</button>
-            <button>Github</button>
+            <button>Twitter (api under review)</button>
+            <button onClick={this.handelGithubSignIn}>Github</button>
             {this.state.username ? (
               <button onClick={this.handelLogout}>Logout</button>
             ) : (
