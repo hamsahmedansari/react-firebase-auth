@@ -61,6 +61,22 @@ class Home extends Component {
         });
       });
   };
+
+  handelFacebookSignIn = () => {
+    const facebookAuthProvider = new firebase.auth.FacebookAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(facebookAuthProvider)
+      .then(({ user }) => {
+        console.log(user);
+        this.setState({
+          username: user.displayName,
+          image: user.photoURL,
+          email: user.email
+        });
+      })
+      .catch(err => console.log(err));
+  };
   render() {
     return (
       <React.Fragment>
@@ -80,7 +96,7 @@ class Home extends Component {
           <div>
             <button onClick={this.handelGoogleSignIn}>Google</button>
             <button onClick={this.handelAnonymousSignIn}>Anonymous</button>
-            <button>Facebook</button>
+            <button onClick={this.handelFacebookSignIn}>Facebook</button>
             <button>Twitter</button>
             <button>Github</button>
             {this.state.username ? (
